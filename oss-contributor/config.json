@@ -1,0 +1,16 @@
+{
+  "techStack": ["TypeScript", "React", "Vue", "Node.js", "Vite", "Next.js"],
+  "minStars": 500,
+  "maxIssueAge": 30,
+  "preferredLabels": ["good first issue", "help wanted", "bug", "documentation"],
+  "excludeLabels": ["wontfix", "invalid", "duplicate"],
+  "ghCliPath": "D:\\Program Files\\GitHub CLI\\gh.exe",
+  "tempDir": "$env:TEMP",
+  "defaultBranch": "main",
+  "commitPrefix": {
+    "bug": "fix",
+    "enhancement": "feat",
+    "documentation": "docs",
+    "test": "test"
+  }
+}
