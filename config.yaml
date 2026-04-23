@@ -1,0 +1,37 @@
+masterDir: C:\Users\klz\AISkills
+language: zh
+git:
+  enabled: true
+  remote: https://github.com/shanliuling/my-skills
+  autoPush: true
+watch:
+  enabled: false
+  debounceMs: 3000
+apps:
+  - name: Claude
+    skillsPath: C:\Users\klz\AppData\Roaming\Claude\skills
+    enabled: true
+  - name: Gemini CLI
+    skillsPath: C:\Users\klz\.gemini\skills
+    enabled: true
+  - name: Codex
+    skillsPath: C:\Users\klz\.codex\skills
+    enabled: true
+  - name: Cursor
+    skillsPath: C:\Users\klz\AppData\Roaming\Cursor\User\skills
+    enabled: true
+  - name: Windsurf
+    skillsPath: C:\Users\klz\AppData\Roaming\Windsurf\skills
+    enabled: true
+  - name: GitHub Copilot
+    skillsPath: C:\Users\klz\.copilot\skills
+    enabled: true
+  - name: Cline
+    skillsPath: C:\Users\klz\.cline\skills
+    enabled: true
+  - name: Continue
+    skillsPath: C:\Users\klz\.continue\skills
+    enabled: true
+  - name: Roo Code
+    skillsPath: C:\Users\klz\AppData\Roaming\Code\User\globalStorage\rooveterinaryinc.roo-cline\skills
+    enabled: true
