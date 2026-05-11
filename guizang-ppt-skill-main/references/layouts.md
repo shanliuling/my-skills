@@ -18,13 +18,30 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 
 | 场景 | 推荐比例 | 写法 |
 |------|---------|------|
-| 左文右图 主图 | 16:10 或 4:3 | `aspect-ratio:16/10; max-height:54vh` |
-| 图片网格（多图对比） | 统一 | **固定 `height:26vh`，不用 aspect-ratio** |
-| 左小图 + 右文字 | 1:1 或 3:2 | `aspect-ratio:1/1; max-width:40vw` |
-| 全屏主视觉 | 16:9 | `aspect-ratio:16/9; max-height:64vh` |
-| 图文混排小插图 | 3:2 | `aspect-ratio:3/2; max-width:30vw` |
+| 左文右图 主图 | 16:10 或 4:3 | `.frame-img.r-16x10` 或 `.frame-img.r-4x3` |
+| 图片网格（多图对比） | 统一 | `.frame-img.h-22` / `.frame-img.h-26`，不用 aspect-ratio |
+| 小型面板组 | 统一 | `.frame-img.h-16` / `.frame-img.h-18`，同组必须同高 |
+| 左小图 + 右文字 | 1:1 或 3:2 | `.frame-img.r-1x1` 或 `.frame-img.r-3x2` |
+| 全屏主视觉 | 16:9 | `.frame-img.r-16x9` |
+| 信息图 / 截图再设计 | 16:9 或 16:10 | `.frame-img.r-16x9.fit-contain` 或 `.frame-img.r-16x10.fit-contain` |
+| 图文混排小插图 | 3:2 或 3:4 | `.frame-img.r-3x2` 或 `.frame-img.r-3x4` |
 
-图片必须包在 `<figure class="frame-img">` 里，里面的 `<img>` 会自动 `object-fit:cover + object-position:top center`，只裁底部，不裁顶/左/右。
+图片必须包在 `<figure class="frame-img">` 里。默认照片会 `object-fit:cover + object-position:top center`,只裁底部,不裁顶/左/右。信息图和截图再设计必须加 `.fit-contain`,避免文字或标注被裁切。
+
+### B2. 图片与内容的垂直对齐
+
+图片应该跟正文内容区对齐,不要默认贴到大标题顶端。特别是左文右图和图文混排页:
+
+- 如果左列是 kicker + 大标题 + 正文 + callout,右列图片通常从正文高度开始,可给图片加 `style="margin-top:7vh"` 到 `9vh`
+- 如果图片是信息图或 UI 情景图,优先对齐正文首行或说明文字,不要和超大标题顶端齐平
+- 如果一张截图/UI 情景图在横向页面里变成很长的条,不要硬拉满宽;改成极宽横图素材,或拆成 2-3 个局部面板拼排
+- 多图面板必须使用同一个高度类,不要混用 `h-16` / `h-22` 或手写不同 `height`
+
+### B3. 标题与正文的间距
+
+- 两段式页面(顶部标题 + 下方长正文/引用/图表)必须在标题和内容之间留出明显间距,推荐 `margin-top:6vh` 到 `8vh`
+- 居中大标题页必须让主标题在页面水平居中,使用 `.center` 或 `text-align:center; margin-inline:auto`
+- 复杂内容页(大标题 + 小标题 + 详细内容)要让大标题和下方内容分层,下方内容使用左右两端对齐的 grid 或 rowline,不要全部堆在一条中轴线上
 
 ### C. 图片定位准则（避免图片堆到页面最底部、被浏览器工具栏遮挡）
 
@@ -44,6 +61,24 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 - 主题色从 `references/themes.md` 的 5 套预设里选一套,不允许自定义 hex 值
 - 主题节奏(每页用 light / dark / hero light / hero dark 哪一个)在下文"主题节奏规划"一节有硬规则,生成前必读
 - 两件事都要在挑布局之前决定,避免返工
+
+### E. 动效系统(默认开启 · Motion One 驱动)
+
+**核心机制**:template.html 底部的 module script 会在翻页时触发入场动画。所有带 `data-anim` 的元素初始不可见,翻到当前页时由 Motion One 逐个淡入。
+
+**动效策略**:在 `<section>` 上加 `data-animate="<recipe>"` 选择动画风格;每个需要入场动画的元素加 `data-anim`(可选附值,如 `left` / `right` / `line` / `step`)。
+
+| recipe | 用法 | 适合布局 |
+|---|---|---|
+| 默认(cascade) | 什么也不加,自动级联淡入 | 大部分正文页(Layout 3 / 4 / 5 / 10) |
+| `hero` | `.hero` 页自动启用,节奏更慢更仪式感 | Layout 1 / 2 / 7(所有 hero 页) |
+| `quote` | 一句一句揭示,慢节奏(550ms stagger) | Layout 8 大引用 |
+| `directional` | 左进 → 分割 → 右进,用于对比 | Layout 9 Before/After |
+| `pipeline` | 手动推进,按 →/空格 一步步点亮 | Layout 6 流水线 |
+
+**降级保底**:如果 motion.min.js 本地 + CDN 都加载失败,脚本会强制把所有 `data-anim` 元素设为 `opacity:1`,内容永远可读。
+
+**不需要动效的页面**:如果某页想完全跳过动效,不加任何 `data-anim` 即可 —— Motion One 只对带标记的元素生效。
 
 ---
 
@@ -133,13 +168,13 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div>Vol.01</div>
   </div>
   <div class="frame" style="display:grid; gap:4vh; align-content:center; min-height:80vh">
-    <div class="kicker">私享会 · 李继刚</div>
-    <h1 class="h-hero">一人公司</h1>
-    <h2 class="h-sub">被 AI 折叠的组织</h2>
-    <p class="lead" style="max-width:60vw">
+    <div class="kicker" data-anim>私享会 · 李继刚</div>
+    <h1 class="h-hero" data-anim>一人公司</h1>
+    <h2 class="h-sub" data-anim>被 AI 折叠的组织</h2>
+    <p class="lead" style="max-width:60vw" data-anim>
       一个 AI 创作者 —— 在 64 天里做了 11 万行代码、在 9 个平台上持续输出，生活节奏几乎没有被改变。
     </p>
-    <div class="meta-row">
+    <div class="meta-row" data-anim>
       <span>歸藏 Guizang</span><span>·</span><span>独立创作者 / CodePilot 作者</span>
     </div>
   </div>
@@ -167,9 +202,9 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div>Act I · 01 / 25</div>
   </div>
   <div class="frame" style="display:grid; gap:6vh; align-content:center; min-height:80vh">
-    <div class="kicker">Act I</div>
-    <h1 class="h-hero" style="font-size:8.5vw">硬数据</h1>
-    <p class="lead" style="max-width:55vw">
+    <div class="kicker" data-anim>Act I</div>
+    <h1 class="h-hero" style="font-size:8.5vw" data-anim>硬数据</h1>
+    <p class="lead" style="max-width:55vw" data-anim>
       先看数字，再谈方法。
     </p>
   </div>
@@ -196,37 +231,37 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div>Act I / Dev · 02 / 25</div>
   </div>
   <div class="frame" style="padding-top:6vh">
-    <div class="kicker">一个人，做了什么。</div>
-    <h2 class="h-xl">过去 64 天</h2>
-    <p class="lead" style="margin-bottom:5vh">从 0 到开源 CodePilot。</p>
+    <div class="kicker" data-anim>一个人，做了什么。</div>
+    <h2 class="h-xl" data-anim>过去 64 天</h2>
+    <p class="lead" style="margin-bottom:5vh" data-anim>从 0 到开源 CodePilot。</p>
 
     <div class="grid-6" style="margin-top:6vh">
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">Duration</div>
         <div class="stat-nb">64 <span class="stat-unit">天</span></div>
         <div class="stat-note">从 0 到现在</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">Lines of Code</div>
         <div class="stat-nb">110K+</div>
         <div class="stat-note">一行行写到 11 万+</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">GitHub Stars</div>
         <div class="stat-nb">5,166</div>
         <div class="stat-note">一个开源仓库</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">Downloads</div>
         <div class="stat-nb">41K+</div>
         <div class="stat-note">装到了几万台电脑里</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">AI Providers</div>
         <div class="stat-nb">19</div>
         <div class="stat-note">跨平台接入</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card" data-anim>
         <div class="stat-label">Commits</div>
         <div class="stat-nb">608+</div>
         <div class="stat-note">没有协作者</div>
@@ -260,22 +295,22 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <!-- 左列：标题 + 正文 + callout，flex column 让 callout 贴列底 -->
     <div style="display:flex; flex-direction:column; justify-content:space-between; gap:3vh">
       <div>
-        <div class="kicker">BUT</div>
-        <h2 class="h-xl" style="white-space:nowrap; font-size:7.2vw">
+        <div class="kicker" data-anim>BUT</div>
+        <h2 class="h-xl" style="white-space:nowrap; font-size:7.2vw" data-anim>
           我不是程序员。
         </h2>
-        <p class="lead" style="margin-top:3vh">
+        <p class="lead" style="margin-top:3vh" data-anim>
           大学毕业之后再也没写过一行代码。过去十年做的是 UI 设计和 AI 特效。
         </p>
       </div>
-      <div class="callout">
+      <div class="callout" data-anim>
         "这东西在三年前，<br>
         需要一个十人团队做一年。"
         <div class="callout-src">— 一个观察者的判断</div>
       </div>
     </div>
     <!-- 右列：图片用标准 16/10 比例 + max-height，不要 align-self:end -->
-    <figure class="frame-img" style="aspect-ratio:16/10; max-height:56vh">
+    <figure class="frame-img r-16x10" data-anim>
       <img src="images/codepilot.png" alt="CodePilot 产品截图">
       <figcaption class="img-cap">CodePilot · 产品截图</figcaption>
     </figure>
@@ -291,7 +326,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 - 用 `grid-2-7-5`（左 7 份、右 5 份），`align-items:start` 已在 template 预设
 - **左列**用 flex column + `justify-content:space-between`：标题贴顶，callout 自然贴底
 - **右列图片** **不要加 `align-self:end`**。会让图片滑到 cell 底部，低分屏下被浏览器工具栏遮挡
-- 图片必须用 **标准比例 16/10 或 4/3 + `max-height:56vh`**，不要用原图奇葩比例（`2592/1798` 这种）
+- 图片必须用 **标准比例类 `.r-16x10` 或 `.r-4x3`**，不要用原图奇葩比例（`2592/1798` 这种）
 
 ---
 
@@ -304,31 +339,31 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div>Act I / Ops · 05 / 27</div>
   </div>
   <div class="frame" style="padding-top:5vh">
-    <div class="kicker">Proof · 粉丝实证</div>
-    <h2 class="h-xl">10 个平台 · 6 张截图</h2>
+    <div class="kicker" data-anim>Proof · 粉丝实证</div>
+    <h2 class="h-xl" data-anim>10 个平台 · 6 张截图</h2>
 
     <div class="grid-3-3" style="margin-top:4vh">
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/weibo.png" alt="微博 289K">
         <figcaption class="img-cap">微博 · 289K</figcaption>
       </figure>
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/twitter.png" alt="推特 137K">
         <figcaption class="img-cap">推特 · 137K</figcaption>
       </figure>
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/wechat.png" alt="公众号 96K">
         <figcaption class="img-cap">公众号 · 96K</figcaption>
       </figure>
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/jike.png" alt="即刻 26K">
         <figcaption class="img-cap">即刻 · 26K</figcaption>
       </figure>
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/xhs.png" alt="小红书 19K">
         <figcaption class="img-cap">小红书 · 19K</figcaption>
       </figure>
-      <figure class="frame-img" style="height:26vh">
+      <figure class="frame-img" style="height:26vh" data-anim>
         <img src="images/douyin.png" alt="抖音 10K">
         <figcaption class="img-cap">抖音 · 10K</figcaption>
       </figure>
@@ -351,7 +386,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 ## Layout 6: 两列流水线（Pipeline）
 
 ```html
-<section class="slide light">
+<section class="slide light" data-animate="pipeline">
   <div class="chrome">
     <div>我的工作流 · Workflow</div>
     <div>Act II · 15 / 27</div>
@@ -364,27 +399,27 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div class="pipeline-section">
       <div class="pipeline-label">文本侧 · Text Pipeline</div>
       <div class="pipeline">
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">01</div>
           <div class="step-title">Draft</div>
           <div class="step-desc">AI 帮我起草初稿</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">02</div>
           <div class="step-title">Polish</div>
           <div class="step-desc">AI 润色去 AI 味</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">03</div>
           <div class="step-title">Morph</div>
           <div class="step-desc">AI 变形成推特 / 小红书</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">04</div>
           <div class="step-title">Illustrate</div>
           <div class="step-desc">AI 生成信息图</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">05</div>
           <div class="step-title">Distribute</div>
           <div class="step-desc">一键分发 9 平台</div>
@@ -396,17 +431,17 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div class="pipeline-section">
       <div class="pipeline-label">视觉 · 视频侧 · Video Pipeline</div>
       <div class="pipeline">
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">06</div>
           <div class="step-title">Cut</div>
           <div class="step-desc">AI 帮我剪辑</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">07</div>
           <div class="step-title">Wrap</div>
           <div class="step-desc">AI 帮我包装</div>
         </div>
-        <div class="step">
+        <div class="step" data-anim="step">
           <div class="step-nb">08</div>
           <div class="step-title">Cover</div>
           <div class="step-desc">AI 生成封面</div>
@@ -426,6 +461,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 - 两组之间用 3.6vh 的间距 + 顶部细分隔线（已在 CSS 中预设）
 - 每个 step 是固定的 nb → title → desc 结构
 - 步骤数不限但单行最好 ≤5 个，否则换到第二 pipeline
+- **动效**:`<section>` 加 `data-animate="pipeline"`,每个 `.step` 加 `data-anim="step"`。翻到此页时步骤默认 `opacity:.15`,按 →/空格/滚轮下滑时一次点亮一个 step;**所有 step 点亮完才会翻到下一页**,可制造演讲互动感
 
 ---
 
@@ -438,13 +474,13 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
     <div>24 / 27</div>
   </div>
   <div class="frame" style="display:grid; gap:8vh; align-content:center; min-height:80vh">
-    <div class="kicker">The Question</div>
+    <div class="kicker" data-anim>The Question</div>
     <h1 class="h-hero" style="font-size:7vw; line-height:1.15">
-      你的公司里，<br>
-      哪些岗位本来就<br>
-      不该由人来做？
+      <span data-anim style="display:block">你的公司里，</span>
+      <span data-anim style="display:block">哪些岗位本来就</span>
+      <span data-anim style="display:block">不该由人来做？</span>
     </h1>
-    <p class="lead" style="max-width:50vw">
+    <p class="lead" style="max-width:50vw" data-anim>
       这个问题，不是技术问题，是架构问题。
     </p>
   </div>
@@ -466,21 +502,22 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 ## Layout 8: 大引用页（Big Quote · 衬线金句）
 
 ```html
-<section class="slide light">
+<section class="slide light" data-animate="quote">
   <div class="chrome">
     <div>The Takeaway · 核心金句</div>
     <div>18 / 25</div>
   </div>
   <div class="frame" style="display:grid; gap:5vh; align-content:center; min-height:80vh">
-    <div class="kicker">Quote · 金句</div>
+    <div class="kicker" data-anim>Quote · 金句</div>
     <blockquote style="font-family:var(--serif-zh); font-weight:700; font-size:5.8vw; line-height:1.2; letter-spacing:-.01em; max-width:72vw">
-      "没有交接,<br>所有人都在构建。"
+      <span data-anim="line" style="display:block">"没有交接,</span>
+      <span data-anim="line" style="display:block">所有人都在构建。"</span>
     </blockquote>
-    <p class="lead" style="max-width:55vw; opacity:.65">
+    <p class="lead" style="max-width:55vw; opacity:.65" data-anim>
       Without the handoff, everyone builds.<br>
       And that makes all the difference.
     </p>
-    <div class="meta-row">
+    <div class="meta-row" data-anim>
       <span>— Luke Wroblewski</span><span>·</span><span>2026.04.16</span>
     </div>
   </div>
@@ -502,18 +539,18 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
 ## Layout 9: 并列对比（A vs B · 旧 vs 新）
 
 ```html
-<section class="slide light">
+<section class="slide light" data-animate="directional">
   <div class="chrome">
     <div>旧 vs 新 · The Shift</div>
     <div>12 / 25</div>
   </div>
   <div class="frame" style="padding-top:5vh">
-    <div class="kicker">Before / After · 范式转变</div>
-    <h2 class="h-xl" style="margin-bottom:4vh">从交接到共建</h2>
+    <div class="kicker" data-anim>Before / After · 范式转变</div>
+    <h2 class="h-xl" style="margin-bottom:4vh" data-anim>从交接到共建</h2>
 
     <div class="grid-2-6-6" style="gap:5vw 4vh">
       <!-- 左列：旧 -->
-      <div style="padding:3vh 2vw; border-left:3px solid currentColor; opacity:.55">
+      <div data-anim="left" style="padding:3vh 2vw; border-left:3px solid currentColor; opacity:.55">
         <div class="kicker" style="opacity:.9">Before · 旧模式</div>
         <h3 class="h-md" style="margin-top:2vh">设计 → 开发 → 交接</h3>
         <ul style="margin-top:3vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.4vh; font-family:var(--sans-zh); font-size:max(14px,1.1vw); line-height:1.55">
@@ -524,7 +561,7 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
         </ul>
       </div>
       <!-- 右列:新 -->
-      <div style="padding:3vh 2vw; border-left:3px solid currentColor">
+      <div data-anim="right" style="padding:3vh 2vw; border-left:3px solid currentColor">
         <div class="kicker" style="opacity:.9">After · 新模式</div>
         <h3 class="h-md" style="margin-top:2vh">同工具 · 并行 · 共建</h3>
         <ul style="margin-top:3vh; padding-left:1.2em; display:flex; flex-direction:column; gap:1.4vh; font-family:var(--sans-zh); font-size:max(14px,1.1vw); line-height:1.55">
@@ -562,24 +599,24 @@ layouts.md 使用的所有类（`h-hero` / `h-xl` / `h-sub` / `h-md` / `lead` / 
   <div class="frame grid-2-8-4" style="padding-top:6vh">
     <!-- 左列:大段正文 + 引用 -->
     <div>
-      <div class="kicker">Phase 01 · 设计阶段</div>
-      <h2 class="h-xl" style="margin-top:1vh; margin-bottom:3vh">设计先行 · 2 周</h2>
+      <div class="kicker" data-anim>Phase 01 · 设计阶段</div>
+      <h2 class="h-xl" style="margin-top:1vh; margin-bottom:3vh" data-anim>设计先行 · 2 周</h2>
 
-      <p class="lead" style="margin-bottom:3vh">
+      <p class="lead" style="margin-bottom:3vh" data-anim>
         在 Figma 中完成视觉探索与设计系统,网格 / 排版 / 颜色变量 / 可复用组件,桌面和移动端稿件几轮反馈迭代。
       </p>
 
-      <p style="font-family:var(--sans-zh); font-size:max(14px,1.15vw); line-height:1.75; opacity:.78; margin-bottom:2.4vh">
+      <p data-anim style="font-family:var(--sans-zh); font-size:max(14px,1.15vw); line-height:1.75; opacity:.78; margin-bottom:2.4vh">
         两周之内,视觉风格、粗略结构、方向性内容全部稳定。这是扎实的传统设计流程——在这里还没什么新鲜事。
       </p>
 
-      <div class="callout" style="margin-top:3vh">
+      <div class="callout" style="margin-top:3vh" data-anim>
         "This phase was pretty standard.<br>Just a solid Web design process."
         <div class="callout-src">— Luke Wroblewski</div>
       </div>
     </div>
     <!-- 右列:辅助图 · 竖版或方形 -->
-    <figure class="frame-img" style="aspect-ratio:3/4; max-height:60vh">
+    <figure class="frame-img r-3x4" data-anim>
       <img src="images/figma.png" alt="Figma design system">
       <figcaption class="img-cap">Figma · Design System</figcaption>
     </figure>
