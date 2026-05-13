@@ -1,37 +1,133 @@
-masterDir: C:\Users\klz\AISkills
+masterDir: C:\Users\13629\AISkills
 language: zh
 git:
   enabled: true
-  remote: https://github.com/shanliuling/my-skills
+  remote: https://github.com/shanliuling/my-skills.git
   autoPush: true
 watch:
   enabled: false
   debounceMs: 3000
 apps:
-  - name: Claude
-    skillsPath: C:\Users\klz\AppData\Roaming\Claude\skills
+  - name: AdaL
+    skillsPath: C:\Users\13629\.adal\skills
+    enabled: false
+  - name: Amp
+    skillsPath: C:\Users\13629\.amp\skills
+    enabled: false
+  - name: Antigravity
+    skillsPath: C:\Users\13629\.gemini\antigravity\skills
     enabled: true
-  - name: Gemini CLI
-    skillsPath: C:\Users\klz\.gemini\skills
-    enabled: true
-  - name: Codex
-    skillsPath: C:\Users\klz\.codex\skills
-    enabled: true
-  - name: Cursor
-    skillsPath: C:\Users\klz\AppData\Roaming\Cursor\User\skills
-    enabled: true
-  - name: Windsurf
-    skillsPath: C:\Users\klz\AppData\Roaming\Windsurf\skills
-    enabled: true
-  - name: GitHub Copilot
-    skillsPath: C:\Users\klz\.copilot\skills
+  - name: Augment
+    skillsPath: C:\Users\13629\.augment\skills
+    enabled: false
+  - name: Claude Code
+    skillsPath: C:\Users\13629\.claude\skills
     enabled: true
   - name: Cline
-    skillsPath: C:\Users\klz\.cline\skills
+    skillsPath: C:\Users\13629\.cline\skills
     enabled: true
+  - name: CodeBuddy
+    skillsPath: C:\Users\13629\.codebuddy\skills
+    enabled: false
+  - name: Codex
+    skillsPath: C:\Users\13629\.codex\skills
+    enabled: true
+  - name: Command Code
+    skillsPath: C:\Users\13629\.commandcode\skills
+    enabled: false
   - name: Continue
-    skillsPath: C:\Users\klz\.continue\skills
+    skillsPath: C:\Users\13629\.continue\skills
+    enabled: false
+  - name: Cortex Code
+    skillsPath: C:\Users\13629\.snowflake\cortex\skills
+    enabled: false
+  - name: Crush
+    skillsPath: C:\Users\13629\.config\crush\skills
+    enabled: false
+  - name: Cursor
+    skillsPath: C:\Users\13629\.cursor\skills
+    enabled: false
+  - name: Droid
+    skillsPath: C:\Users\13629\.factory\skills
+    enabled: false
+  - name: Gemini CLI
+    skillsPath: C:\Users\13629\.gemini\skills
     enabled: true
+  - name: GitHub Copilot
+    skillsPath: C:\Users\13629\.copilot\skills
+    enabled: true
+  - name: Goose
+    skillsPath: C:\Users\13629\.config\goose\skills
+    enabled: false
+  - name: iFlow CLI
+    skillsPath: C:\Users\13629\.iflow\skills
+    enabled: false
+  - name: Junie
+    skillsPath: C:\Users\13629\.junie\skills
+    enabled: false
+  - name: Kilo Code
+    skillsPath: C:\Users\13629\.kilocode\skills
+    enabled: false
+  - name: Kimi Code CLI
+    skillsPath: C:\Users\13629\.config\kimi\skills
+    enabled: false
+  - name: Kiro CLI
+    skillsPath: C:\Users\13629\.kiro\skills
+    enabled: false
+  - name: Kode
+    skillsPath: C:\Users\13629\.kode\skills
+    enabled: false
+  - name: MCPJam
+    skillsPath: C:\Users\13629\.mcpjam\skills
+    enabled: false
+  - name: Mistral Vibe
+    skillsPath: C:\Users\13629\.vibe\skills
+    enabled: false
+  - name: Mux
+    skillsPath: C:\Users\13629\.mux\skills
+    enabled: false
+  - name: Neovate
+    skillsPath: C:\Users\13629\.neovate\skills
+    enabled: false
+  - name: OpenClaw
+    skillsPath: C:\Users\13629\.openclaw\skills
+    enabled: false
+  - name: OpenCode
+    skillsPath: C:\Users\13629\.opencode\skills
+    enabled: false
+  - name: OpenHands
+    skillsPath: C:\Users\13629\.openhands\skills
+    enabled: false
+  - name: Pi
+    skillsPath: C:\Users\13629\.pi\agent\skills
+    enabled: false
+  - name: Pochi
+    skillsPath: C:\Users\13629\.pochi\skills
+    enabled: false
+  - name: Qoder
+    skillsPath: C:\Users\13629\.qoder\skills
+    enabled: false
+  - name: Qwen Code
+    skillsPath: C:\Users\13629\.qwen\skills
+    enabled: false
+  - name: Replit
+    skillsPath: C:\Users\13629\.config\replit\skills
+    enabled: false
   - name: Roo Code
-    skillsPath: C:\Users\klz\AppData\Roaming\Code\User\globalStorage\rooveterinaryinc.roo-cline\skills
+    skillsPath: C:\Users\13629\.roo\skills
+    enabled: false
+  - name: Trae
+    skillsPath: C:\Users\13629\.trae\skills
+    enabled: true
+  - name: Trae CN
+    skillsPath: C:\Users\13629\.trae\skills
+    enabled: true
+  - name: Windsurf
+    skillsPath: C:\Users\13629\.codeium\windsurf\skills
+    enabled: false
+  - name: Zencoder
+    skillsPath: C:\Users\13629\.zencoder\skills
+    enabled: false
+  - name: Universal
+    skillsPath: C:\Users\13629\.agents\skills
     enabled: true
